@@ -1,16 +1,16 @@
 # model_utils.py
-
 import os
 import nltk
 import ssl
-# Create a directory for NLTK data in the current working directory
-nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')
-os.makedirs(nltk_data_dir, exist_ok=True)
+import tempfile
+
+# Create a temporary directory for NLTK data
+nltk_data_dir = tempfile.mkdtemp()
 
 # Set the NLTK data path
 nltk.data.path.append(nltk_data_dir)
 
-# Download stopwords to the custom directory
+# Download stopwords to the temporary directory
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -18,19 +18,13 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-nltk.download('stopwords', download_dir=nltk_data_dir)
+nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
 
 from nltk.corpus import stopwords
-
 import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 import numpy as np
-
 from keras.preprocessing.text import Tokenizer
-from keras.callbacks import Callback
-import matplotlib.pyplot as plt
-from datetime import datetime
-
 # Define the personality trait labels
 traits = ['cAGR', 'cCON', 'cEXT', 'cOPN', 'cNEU']
 
