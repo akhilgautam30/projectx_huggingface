@@ -16,7 +16,7 @@ async def root():
 @app.get("/predict")
 async def predict_personality_get(text: str):
     try:
-        print("API get predic")
+        print("--------------------------")
         predictions = predict_personality(text)
         return {"predictions": predictions}
     except NameError:

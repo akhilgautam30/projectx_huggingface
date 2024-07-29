@@ -5,7 +5,6 @@ on:
 
   # to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
@@ -14,35 +13,7 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-      - name: Create temporary directory for sparse checkout
-        run: mkdir -p temp_repo
-      - name: Initialize sparse checkout in temporary directory
-        run: |
-          cd temp_repo
-          git init
-          git remote add origin  https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment
-          git config core.sparseCheckout true
-          echo "/*" > .git/info/sparse-checkout
-          echo "!weights-roberta-base.h5" >> .git/info/sparse-checkout
-
-      - name: Pull target repository contents except weights-base.h5
-        run: |
-          cd temp_repo
-          git pull origin main
-
-      - name: Copy changes from source repository to temp directory
-        run: |
-          rsync -av --exclude 'weights-roberta-base.h5' . temp_repo/
-
-      - name: Set Git user email and name
-        run: |
-          cd temp_repo
-          git config user.email "akhilgautam2011@gmail.com"
-          git config user.name "Akhil Gautam"
-          
-      - name: Commit and force push to target repository
-        run: |
-          cd temp_repo
-          git add .
-          git commit -m "Sync changes from source repository"
-          git push --force https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
