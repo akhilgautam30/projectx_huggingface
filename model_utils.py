@@ -1,12 +1,31 @@
 # model_utils.py
 
 import os
+import nltk
+import ssl
+# Create a directory for NLTK data in the current working directory
+nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+
+# Set the NLTK data path
+nltk.data.path.append(nltk_data_dir)
+
+# Download stopwords to the custom directory
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+nltk.download('stopwords', download_dir=nltk_data_dir)
+
+from nltk.corpus import stopwords
+
 import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 import numpy as np
-import nltk
-nltk.download('stopwords')
-from nltk.corpus import stopwords
+
 from keras.preprocessing.text import Tokenizer
 from keras.callbacks import Callback
 import matplotlib.pyplot as plt
