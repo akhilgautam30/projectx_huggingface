@@ -1,7 +1,7 @@
 # API/main.py
 
 # main.py (in the root directory)
-
+#test command
 import sys
 import os
 from model_utils import predict_personality
