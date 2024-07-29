@@ -45,4 +45,4 @@ jobs:
           cd temp_repo
           git add .
           git commit -m "Sync changes from source repository"
-          git push --force origin main
+          git push --force https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
