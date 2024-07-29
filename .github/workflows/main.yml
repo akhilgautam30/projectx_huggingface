@@ -20,7 +20,7 @@ jobs:
         run: |
           cd temp_repo
           git init
-          git remote add origin  https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
+          git remote add origin  https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment
           git config core.sparseCheckout true
           echo "/*" > .git/info/sparse-checkout
           echo "!weights-roberta-base.h5" >> .git/info/sparse-checkout
