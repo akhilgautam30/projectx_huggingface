@@ -14,13 +14,28 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-      - name: Mark weights-base.h5 as assume-unchanged
-        run: git update-index --assume-unchanged weights-roberta-base.h5
-        
-      - name: Push to hub
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
-      
-      - name: Unmark weights-base.h5 as assume-unchanged
-        run: git update-index --no-assume-unchanged weights-roberta-base.h5
+          
+      - name: Initialize sparse checkout in temporary directory
+        run: |
+          cd temp_repo
+          git init
+          git remote add origin  https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
+          git config core.sparseCheckout true
+          echo "/*" > .git/info/sparse-checkout
+          echo "!weights-roberta-base.h5" >> .git/info/sparse-checkout
+
+      - name: Pull target repository contents except weights-base.h5
+        run: |
+          cd temp_repo
+          git pull origin main
+
+      - name: Copy changes from source repository to temp directory
+        run: |
+          rsync -av --exclude 'weights-roberta-base.h5' . temp_repo/
+
+      - name: Commit and force push to target repository
+        run: |
+          cd temp_repo
+          git add .
+          git commit -m "Sync changes from source repository"
+          git push --force origin main
