@@ -83,7 +83,7 @@ def single_predict(model, text, traits=['cAGR', 'cCON', 'cEXT', 'cOPN', 'cNEU'])
     probs = tf.math.sigmoid(logits).numpy()
     print("sigmoid function-----")
     predictions = np.where(probs > 0.5, 1, 0)
-    print("predictions function-----")
+    print("predictions function------")
     for t, s in zip(traits, probs[0]):
         traits_scores[t] = s
     for t, l in zip(traits, predictions[0]):
