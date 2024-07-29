@@ -34,6 +34,12 @@ jobs:
         run: |
           rsync -av --exclude 'weights-roberta-base.h5' . temp_repo/
 
+      - name: Set Git user email and name
+        run: |
+          cd temp_repo
+          git config user.email "akhilgautam2011@gmail.com"
+          git config user.name "Akhil Gautam"
+          
       - name: Commit and force push to target repository
         run: |
           cd temp_repo
