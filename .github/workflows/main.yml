@@ -24,15 +24,20 @@ jobs:
           git config core.sparseCheckout true
           echo "/*" > .git/info/sparse-checkout
           echo "!weights-roberta-base.h5" >> .git/info/sparse-checkout
-
-      - name: Pull target repository contents except weights-base.h5
-        run: |
-          cd temp_repo
-          git pull origin main
+          git fetch origin main
+          git checkout -b main origin/main
 
       - name: Copy changes from source repository to temp directory
         run: |
-          rsync -av --exclude 'weights-roberta-base.h5' . temp_repo/
+          cd ..
+          rsync -av --exclude 'weights-roberta-base.h5' ./ source-repo/ temp_repo/
+
+      - name: Preserve weights-base.h5 in the target repository
+        run: |
+          cd temp_repo
+          git fetch origin main
+          git checkout -b main origin/main
+          git add weights-roberta-base.h5 || true
 
       - name: Set Git user email and name
         run: |
