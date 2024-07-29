@@ -66,6 +66,7 @@ def preprocess(docs):
     return newLists
 
 def tokenize_text(text, hugging_model='roberta-base'):
+    print("tokenize_text")
     clean_text = preprocess(text)
     tokenizer = AutoTokenizer.from_pretrained(hugging_model)
     inputs = tokenizer(clean_text, padding=True, truncation=True, return_tensors='tf')
@@ -73,12 +74,16 @@ def tokenize_text(text, hugging_model='roberta-base'):
     return x
 
 def single_predict(model, text, traits=['cAGR', 'cCON', 'cEXT', 'cOPN', 'cNEU']):
+    print("predict function-----")
     traits_scores = dict()
     predicted_labels = dict()
     x = tokenize_text([text])
     logits = model.predict(x, verbose=0).logits
+    print("logits function-----")
     probs = tf.math.sigmoid(logits).numpy()
+    print("sigmoid function-----")
     predictions = np.where(probs > 0.5, 1, 0)
+    print("predictions function-----")
     for t, s in zip(traits, probs[0]):
         traits_scores[t] = s
     for t, l in zip(traits, predictions[0]):
