@@ -69,6 +69,13 @@ def single_predict(model, text, traits=['cAGR', 'cCON', 'cEXT', 'cOPN', 'cNEU'])
     return final_dic
 
 def load_model_and_weights(hugging_model='roberta-base', output_folder='.'):
+
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Output folder: {output_folder}")
+    print("Files in the output folder:")
+    for file in os.listdir(output_folder):
+        print(f"- {file}")
+
     model = TFAutoModelForSequenceClassification.from_pretrained(
         hugging_model, num_labels=len(traits), problem_type="multi_label_classification"
     )
@@ -78,6 +85,7 @@ def load_model_and_weights(hugging_model='roberta-base', output_folder='.'):
         _hugging_model = hugging_model.split('/')[0]
 
     weights_path = os.path.join(output_folder, f'weights-{_hugging_model}.h5')
+    print(f"Looking for weights file at: {weights_path}")
     if os.path.exists(weights_path):
         try:
             model.load_weights(weights_path)
@@ -85,6 +93,7 @@ def load_model_and_weights(hugging_model='roberta-base', output_folder='.'):
         except Exception as e:
             print(f"Error loading weights: {str(e)}")
             print("Using default weights.")
+            return e
     else:
         print(f"Warning: Custom weights file not found at {weights_path}")
         print("Using default weights.")
