@@ -4,8 +4,13 @@ import os
 import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 import numpy as np
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from keras.preprocessing.text import Tokenizer
+from keras.callbacks import Callback
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 # Define the personality trait labels
 traits = ['cAGR', 'cCON', 'cEXT', 'cOPN', 'cNEU']
