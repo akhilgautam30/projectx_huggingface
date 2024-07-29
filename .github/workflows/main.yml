@@ -17,4 +17,4 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
+        run: git push --force https://akhilgautam2011%40gmail.com:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Akhilgautam30/personality_assesment main
