@@ -14,7 +14,8 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-          
+      - name: Create temporary directory for sparse checkout
+        run: mkdir -p temp_repo
       - name: Initialize sparse checkout in temporary directory
         run: |
           cd temp_repo
